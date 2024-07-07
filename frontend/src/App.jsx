@@ -1,6 +1,10 @@
+import Register from "./components/register/register"
+
 const App = () => {
   return (
-    <div className="bg-red-500">App</div>
+    <div>
+      <Register/>
+    </div>
   )
 }
 export default App

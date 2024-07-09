@@ -2,8 +2,8 @@ import { Link } from "react-router-dom"
 
 const Navbar = () => {
   return (
-    <nav>
-        <ul>
+    <nav className="bg-black">
+        <ul className="flex p-4 text-white gap-x-2">
             <li>
                 <Link to="/">Home</Link>
             </li>

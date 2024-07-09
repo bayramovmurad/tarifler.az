@@ -19,7 +19,7 @@ const Auth = () => {
         <Route path="login" element={<Login />} />
       </Routes>
     
-      <button onClick={() => dispatch(setIsAuthenticated(!isAuthenticated))}>{isAuthenticated ? <Link to="register">Login</Link> : (<Link to="login">register</Link>)}</button>
+      <button onClick={() => dispatch(setIsAuthenticated(!isAuthenticated))}>{isAuthenticated ? (<Link to="register">register</Link>) : (<Link to="login">login</Link>)}</button>
 
     </div>
   );

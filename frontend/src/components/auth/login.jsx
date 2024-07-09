@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddLoginUserMutation } from "../../redux/userApiSlice"
 import { setLoginUser } from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const {loginUser} = useSelector(state => state.user);
     const [addLoginUser] = useAddLoginUserMutation();   
@@ -16,6 +19,7 @@ const Login = () => {
         try{
             const response = await addLoginUser(loginUser);
             alert(response.data.message);
+            navigate("/")
         } catch (error) {
             console.error("Login error:", error);
             alert("Login failed. Please try again.");

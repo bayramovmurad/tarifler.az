@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddRegisterUserMutation } from "../../redux/userApiSlice"
 import { setRegisterUser } from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const dispatch = useDispatch();
     const { registerUser } = useSelector(state => state.user);
     const [addRegisterUser] = useAddRegisterUserMutation();
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,6 +19,7 @@ const Register = () => {
         try {
             const response = await addRegisterUser(registerUser);
             alert(response.data.message);
+            navigate("/");
         } catch (error) {
             console.error("Registration error:", error);
             alert("Registration failed. Please try again.");

@@ -1,22 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddRegisterUserMutation } from "../../redux/userApiSlice"
-import { setCreateForm } from "../../redux/userSlice";
+import { setRegisterUser } from "../../redux/userSlice";
 
 const Register = () => {
     const dispatch = useDispatch();
-    const { createForm } = useSelector(state => state.user);
+    const { registerUser } = useSelector(state => state.user);
     const [addRegisterUser] = useAddRegisterUserMutation();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        dispatch(setCreateForm({ name, value }));
+        dispatch(setRegisterUser({ name, value }));
     }
-    console.log(createForm);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await addRegisterUser(createForm);
+            const response = await addRegisterUser(registerUser);
             alert(response.data.message);
         } catch (error) {
             console.error("Registration error:", error);
@@ -26,8 +25,8 @@ const Register = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input className="border-black border" name="username" type="text" value={createForm.username} onChange={handleChange} />
-            <input className="border-black border" name="password" type="password" value={createForm.password} onChange={handleChange} />
+            <input className="border-black border" name="username" type="text" value={registerUser.username} onChange={handleChange} />
+            <input className="border-black border" name="password" type="password" value={registerUser.password} onChange={handleChange} />
             <input className="border-black border" type="submit" />
         </form>
     )

@@ -1,28 +1,46 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    createForm: {
-        username:"",
-        password:"",
+    registerUser: {
+        username: "",
+        password: "",
     },
+    loginUser: {
+        username: "",
+        password: "",
+    },
+    isAuthenticated: false
 }
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setCreateForm: (state, action) => {
+        setRegisterUser: (state, action) => {
             const { name, value } = action.payload;
             return {
                 ...state,
-                createForm: {
-                    ...state.createForm,
+                registerUser: {
+                    ...state.registerUser,
                     [name]: value,
                 },
             };
         },
+        setLoginUser: (state, action) => {
+            const { name, value } = action.payload;
+            return {
+                ...state,
+                loginUser: {
+                    ...state.loginUser,
+                    [name]: value,
+                },
+            };
+        },
+        setIsAuthenticated: (state, action) => {
+            state.isAuthenticated = action.payload;
+        }
     },
 });
 
-export const {setCreateForm} = userSlice.actions;
+export const { setRegisterUser, setLoginUser, setIsAuthenticated } = userSlice.actions;
 export default userSlice.reducer;

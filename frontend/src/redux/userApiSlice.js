@@ -1,19 +1,27 @@
-import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const userApiSlice = createApi({
     reducerPath: 'userApi',
-    tagTypes:["Users"],
+    tagTypes: ["Users"],
     baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_KEY }),
     endpoints: (builder) => ({
         addRegisterUser: builder.mutation({
             query: (user) => ({
                 url: '/register',
-                method:"POST",
+                method: "POST",
                 body: user
             }),
-            invalidatesTags:['Users']
+            invalidatesTags: ['Users']
+        }),
+        addLoginUser: builder.mutation({
+            query: (user) => ({
+                url: '/login',
+                method: "POST",
+                body: user
+            }),
+            invalidatesTags: ['Users']
         })
     })
 });
 
-export const {useAddRegisterUserMutation} = userApiSlice;
+export const { useAddRegisterUserMutation,useAddLoginUserMutation } = userApiSlice;

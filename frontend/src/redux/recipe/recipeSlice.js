@@ -1,7 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    createRecipe: []
+    createRecipe: {
+        name: '',
+        ingredients: '',
+        instructions:'',
+        imageUrl:'',
+        cookingTime:'',
+        userOwner:''
+    }
 }
 
 const recipeSlice =  createSlice({
@@ -9,10 +16,17 @@ const recipeSlice =  createSlice({
     initialState,
     reducers:{
         setCreateRecipe: (state, action) => {
-            state.createRecipe = action.payload
-        }
-    }
+            const {name,value} = action.payload;
+            return {
+                ...state,
+                createRecipe:{
+                    ...state.createRecipe,
+                    [name]: value
+                },
+            };
+        },
+    },
 });
 
-export const { setRecipesData } = recipeSlice.actions;
-export default recipeSlice;
+export const { setCreateRecipe } = recipeSlice.actions;
+export default recipeSlice.reducer;

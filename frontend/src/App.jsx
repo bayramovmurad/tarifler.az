@@ -1,10 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from "./pages/home"
-import Receipe from "./pages/receipe"
+import Recipe from "./pages/recipe"
 import About from "./pages/about"
 import Contact from "./pages/contact"
 import Auth from "./pages/auth"
 import Navbar from './components/navbar/navbar'
+import CreateRecipe from './pages/createRecipe'
 
 
 const App = () => {
@@ -13,11 +14,15 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/receipe" element={<Receipe />} />
+
+        <Route path="/recipe" element={<Recipe />} />
+        <Route path="/create-recipe" element={<CreateRecipe/>} />
+
+
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
-        <Route path="/auth/*" element={<Auth />}/>
+        <Route path="/auth/*" element={<Auth />} />
 
       </Routes>
     </>

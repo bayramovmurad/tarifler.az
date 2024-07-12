@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useAddLoginUserMutation } from "../../redux/userApiSlice"
-import { setLoginUser } from "../../redux/userSlice";
+import { useAddLoginUserMutation } from "../../redux/user/userApiSlice"
+import { setLoginUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 

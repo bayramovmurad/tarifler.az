@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const userApiSlice = createApi({
     reducerPath: 'userApi',
     tagTypes: ["Users"],
-    baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_KEY }),
+    baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_KEY_USERS }),
     endpoints: (builder) => ({
         addRegisterUser: builder.mutation({
             query: (user) => ({

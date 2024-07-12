@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useAddRegisterUserMutation } from "../../redux/userApiSlice"
-import { setRegisterUser } from "../../redux/userSlice";
+import { useAddRegisterUserMutation } from "../../redux/user/userApiSlice"
+import { setRegisterUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {

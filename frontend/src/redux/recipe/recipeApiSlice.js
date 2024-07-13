@@ -1,9 +1,9 @@
-import {fetchBaseQuery, createApi} from '@reduxjs/toolkit/query/react';
+import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react';
 
 export const recipeApiSlice = createApi({
     reducerPath: 'recipeApi',
-    tagTypes:['Recipe'],
-    baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_KEY_RECIPES}),
+    tagTypes: ['Recipe'],
+    baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_KEY_RECIPES }),
     endpoints: (builder) => ({
         getRecipes: builder.query({
             query: () => '/',
@@ -12,13 +12,16 @@ export const recipeApiSlice = createApi({
         addRecipes: builder.mutation({
             query: (recipe) => ({
                 url: '/',
-                method:"POST",
-                body:recipe,
+                method: "POST",
+                body: recipe,
                 providesTags: ['Recipe'],
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             }),
-            invalidatesTags:['Recipe']
+            invalidatesTags: ['Recipe']
         })
     })
 });
 
-export const {useGetRecipesQuery, useAddRecipesMutation} = recipeApiSlice;
+export const { useGetRecipesQuery, useAddRecipesMutation } = recipeApiSlice;

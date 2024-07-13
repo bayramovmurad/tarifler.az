@@ -31,7 +31,8 @@ export const addUserRegister = async (req, res) => {
     const newUser = new UserModel({ username, password: hashedPassword, role: role || 'user' });
 
     await newUser.save();
-    res.json({ message: "User registered successfully" });
+    const token = jwt.sign({ id: newUser.id, role: newUser.role }, SECRET_KEY, { expiresIn: '1h' });
+    res.json({ message: "User registered successfully", token });
 };
 
 export const addUserLogin = async (req, res) => {

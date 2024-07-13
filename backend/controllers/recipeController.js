@@ -1,5 +1,4 @@
 import { RecipeModel } from "../models/recipeModel.js";
-import { UserModel } from "../models/userModel.js"; 
 
 export const getAllRecipes = async (req, res) => {
     try {
@@ -21,9 +20,9 @@ export const getRecipeById = async (req, res) => {
 };
 
 export const createRecipe = async (req, res) => {
-    const { name, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
+    const { name, ingredients, instructions, imageUrl, cookingTime } = req.body;
     try {
-        const user = await UserModel.findById(userOwner);
+        const user = req.user.id
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const newRecipe = new RecipeModel({
@@ -32,7 +31,7 @@ export const createRecipe = async (req, res) => {
             instructions,
             imageUrl,
             cookingTime,
-            userOwner
+            userOwner: user
         });
 
         const savedRecipe = await newRecipe.save();

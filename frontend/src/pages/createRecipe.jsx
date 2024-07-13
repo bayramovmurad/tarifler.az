@@ -7,10 +7,12 @@ const CreateRecipe = () => {
   const { createRecipe } = useSelector(state => state.recipe);
   const [addRecipes] = useAddRecipesMutation();
 
+  localStorage.getItem("token");
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setCreateRecipe({name,value}))
+    dispatch(setCreateRecipe({ name, value }))
   };
 
   const handleSubmit = async (e) => {
@@ -63,14 +65,6 @@ const CreateRecipe = () => {
         placeholder="cookingTime"
         name="cookingTime"
         value={createRecipe.cookingTime}
-        onChange={handleChange}
-      />
-      <input
-        className="border border-black p-3"
-        type="text"
-        placeholder="userOwner"
-        name="userOwner"
-        value={createRecipe.userOwner}
         onChange={handleChange}
       />
       <input className="border border-black p-3" type="submit" value="Submit" />

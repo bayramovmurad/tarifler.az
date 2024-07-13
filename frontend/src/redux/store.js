@@ -7,13 +7,11 @@ import recipeSlice from './recipe/recipeSlice';
 export const store = configureStore({
     reducer: {
         user: userSlice,
-        recipe:recipeSlice,
+        recipe: recipeSlice,
         [userApiSlice.reducerPath]: userApiSlice.reducer,
         [recipeApiSlice.reducerPath]: recipeApiSlice.reducer
 
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(userApiSlice.middleware),
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(recipeApiSlice.middleware)
+        getDefaultMiddleware().concat([userApiSlice.middleware, recipeApiSlice.middleware]),
 })

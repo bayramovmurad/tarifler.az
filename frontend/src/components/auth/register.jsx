@@ -18,6 +18,7 @@ const Register = () => {
         e.preventDefault();
         try {
             const response = await addRegisterUser(registerUser);
+            localStorage.setItem("token", response.data.token)
             alert(response.data.message);
             navigate("/");
         } catch (error) {

@@ -19,6 +19,7 @@ const Login = () => {
         try{
             const response = await addLoginUser(loginUser);
             alert(response.data.message);
+            localStorage.setItem("token", response.data.token)
             navigate("/")
         } catch (error) {
             console.error("Login error:", error);

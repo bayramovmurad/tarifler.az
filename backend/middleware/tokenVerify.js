@@ -5,7 +5,7 @@ import { UserModel } from '../models/userModel.js';
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const receipeUserMiddleware = async (req, res, next) => {
+const tokenVerify = async (req, res, next) => {
     const authHeader = req.header('Authorization');
 
     if (!authHeader) {
@@ -28,4 +28,4 @@ const receipeUserMiddleware = async (req, res, next) => {
     }
 };
 
-export default receipeUserMiddleware;
+export default tokenVerify;

@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddRecipesMutation } from "../redux/recipe/recipeApiSlice";
 import { setCreateRecipe } from "../redux/recipe/recipeSlice";
+import { getToken } from "../utils/token";
 
 const CreateRecipe = () => {
   const dispatch = useDispatch();
   const { createRecipe } = useSelector(state => state.recipe);
   const [addRecipes] = useAddRecipesMutation();
 
-  localStorage.getItem("token");
-
+  getToken()
 
   const handleChange = (e) => {
     const { name, value } = e.target;

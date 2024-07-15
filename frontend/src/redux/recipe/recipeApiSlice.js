@@ -20,8 +20,23 @@ export const recipeApiSlice = createApi({
                 }
             }),
             invalidatesTags: ['Recipe']
+        }),
+        updateRecipe: builder.mutation({
+            query: ({id}) => ({
+                url: `/${id}`,
+                method: "PUT",
+                body: id,
+            }),
+            invalidatesTags: ['Recipe']
+        }),
+        deleteRecipe: builder.mutation({
+            query: ({id}) => ({
+                url: `/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags:['Recipe']
         })
     })
 });
 
-export const { useGetRecipesQuery, useAddRecipesMutation } = recipeApiSlice;
+export const { useGetRecipesQuery, useAddRecipesMutation,useUpdateRecipeMutation,useDeleteRecipeMutation } = recipeApiSlice;

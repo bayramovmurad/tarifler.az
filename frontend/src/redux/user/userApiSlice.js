@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getToken } from '../../utils/token';
+import { getToken, isTokenExpired } from '../../utils/token';
 
 
 export const userApiSlice = createApi({
@@ -8,7 +8,11 @@ export const userApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_KEY_USERS,
         prepareHeaders: (headers) => {
-            const token = getToken();
+            let token = getToken();
+            if (token && isTokenExpired(token)) {
+                localStorage.removeItem('token');
+                token = null;
+            }
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
@@ -36,19 +40,19 @@ export const userApiSlice = createApi({
             invalidatesTags: ['Users']
         }),
         updateUser: builder.mutation({
-            query: ({id,username}) => ({
+            query: ({ id, username }) => ({
                 url: `/update/${id}`,
                 method: "PUT",
-                body:{username}
+                body: { username }
             }),
-            invalidatesTags:['Users']
+            invalidatesTags: ['Users']
         }),
         deleteUser: builder.mutation({
             query: ({ id }) => ({
                 url: `/delete/${id}`,
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${localStorage.removeItem('token')}`
+                    Authorization: `Bearer ${getToken()}`
                 }
             }),
             invalidatesTags: ['Users']
@@ -56,4 +60,4 @@ export const userApiSlice = createApi({
     })
 });
 
-export const { useGetUserQuery, useAddRegisterUserMutation, useAddLoginUserMutation,useUpdateUserMutation,useDeleteUserMutation } = userApiSlice;
+export const { useGetUserQuery, useAddRegisterUserMutation, useAddLoginUserMutation, useUpdateUserMutation, useDeleteUserMutation } = userApiSlice;

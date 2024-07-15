@@ -9,7 +9,8 @@ const initialState = {
         username: "",
         password: "",
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    userUpdate: ''
 }
 
 const userSlice = createSlice({
@@ -38,9 +39,12 @@ const userSlice = createSlice({
         },
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
+        },
+        setUserUpdate: (state, action) => {
+            state.userUpdate = action.payload
         }
     },
 });
 
-export const { setRegisterUser, setLoginUser, setIsAuthenticated } = userSlice.actions;
+export const { setRegisterUser, setLoginUser, setIsAuthenticated, setUserUpdate } = userSlice.actions;
 export default userSlice.reducer;

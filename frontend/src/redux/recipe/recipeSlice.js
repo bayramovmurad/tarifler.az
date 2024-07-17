@@ -25,8 +25,11 @@ const recipeSlice =  createSlice({
                 },
             };
         },
+        clearRecipe: (state) => {
+            state.createRecipe = initialState.createRecipe
+        }
     },
 });
 
-export const { setCreateRecipe } = recipeSlice.actions;
+export const { setCreateRecipe,clearRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;

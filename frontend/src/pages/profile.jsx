@@ -13,14 +13,13 @@ const Profile = () => {
     const { data: user } = useGetUserQuery();
     const navigate = useNavigate();
 
-  useEffect(()=> {
-      if (user) {
-          dispatch(setUserUpdate(user.user.username));
-        
-      }
-      
-  },[])
-    
+    useEffect(() => {
+        if (user) {
+            dispatch(setUserUpdate(user.user.username));
+        }
+
+    }, [])
+
 
     useEffect(() => {
         if (isDeleteSuccess) {
@@ -43,25 +42,27 @@ const Profile = () => {
     };
 
     return (
-        <div>
+        <div className='w-[500px] mx-auto mt-10'>
             <div>
-                <h1>Profile</h1>
                 <form onSubmit={handleUpdateUser}>
                     <div>
                         <label>Username:</label>
                         <input
+                            className='border w-full p-2 border-black rounded-md mt-2'
                             type="text"
                             value={userUpdate}
                             onChange={(e) => dispatch(setUserUpdate(e.target.value))}
                         />
                     </div>
-                    <button type="submit" disabled={userUpdateLoading}>
+                </form>
+                <div className='flex justify-between mt-3'>
+                    <button className='border border-black px-20 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' type="submit" disabled={userUpdateLoading}>
                         {userUpdateLoading ? 'Loading...' : 'Update'}
                     </button>
-                </form>
-                <div className='flex gap-x-4'>
-                    <button onClick={() => deleteUser({ id: user.user._id })}>delete</button>
-                    <button onClick={signOut}>sign out</button>
+                    <div className='flex gap-x-4'>
+                        <button className='border border-black px-3 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' onClick={() => deleteUser({ id: user.user._id })}>Delete Account</button>
+                        <button className='border border-black px-3 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' onClick={signOut}>Sign out</button>
+                    </div>
                 </div>
             </div>
             <UserRecipes user={user} />

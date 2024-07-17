@@ -1,0 +1,28 @@
+.scrollContainer {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    height: 6px;
+    /* Kaydırma çubuğunun yüksekliği */
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+    /* Kaydırma çubuğunun arka planı */
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Kaydırma çubuğunun rengi */
+    border-radius: 10px;
+    /* Kaydırma çubuğunun yuvarlatılmış köşeleri */
+}
+
+.scrollContainer {
+    scrollbar-width: thin;
+    /* Firefox için ince kaydırma çubuğu */
+    scrollbar-color: black transparent;
+    /* Firefox için kaydırma çubuğu renkleri */
+}

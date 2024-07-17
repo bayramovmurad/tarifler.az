@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddLoginUserMutation } from "../../redux/user/userApiSlice"
-import { setLoginUser } from "../../redux/user/userSlice";
+import { clearLoginUser, setLoginUser } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const Login = () => {
@@ -16,24 +17,28 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(loginUser.username == "" || loginUser.password == ""){
+            toast.warning('Please fill all the fields');
+            return;
+        }
         try{
             const response = await addLoginUser(loginUser);
-            alert(response.data.message);
-            localStorage.setItem("token", response.data.token)
-            navigate("/")
+            toast.success(response.data.message);
+            localStorage.setItem("token", response.data.token);
+            dispatch(clearLoginUser());
+            navigate("/");
         } catch (error) {
-            console.error("Login error:", error);
-            alert("Login failed. Please try again.");
+            toast.error("Invalid username and password");
         }
        
     }
  
   return (
     <div>
-        <form action="" onSubmit={handleSubmit}>
-            <input className="border border-black" type="text" name="username" value={loginUser.username} onChange={handleChange}/>
-            <input className="border border-black" type="password" name="password" value={loginUser.password} onChange={handleChange} />
-            <input type="submit" />
+        <form className="flex flex-col gap-y-4" action="" onSubmit={handleSubmit}>
+            <input className="border border-black p-2 rounded-md" placeholder="Enter your name" type="text" name="username" value={loginUser.username} onChange={handleChange}/>
+            <input className="border border-black p-2 rounded-md" placeholder="Enter your password" type="password" name="password" value={loginUser.password} onChange={handleChange} />
+            <input type="submit" value="Login" className="border border-black bg-black text-white hover:text-black hover:bg-white duration-300" />
         </form>
     </div>
   )

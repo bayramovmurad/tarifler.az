@@ -30,7 +30,10 @@ const Navbar = () => {
                 }
             </ul>
             <div>
-                <Link to="/create-recipe">Create Recipe</Link>
+                {
+                    getToken() && <Link to="/create-recipe">Create Recipe</Link>
+                }
+                
             </div>
         </nav>
     )

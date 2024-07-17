@@ -27,6 +27,9 @@ const userSlice = createSlice({
                 },
             };
         },
+        clearRegisterUser: (state) => {
+            state.registerUser = initialState.registerUser;
+        },
         setLoginUser: (state, action) => {
             const { name, value } = action.payload;
             return {
@@ -37,6 +40,9 @@ const userSlice = createSlice({
                 },
             };
         },
+        clearLoginUser: (state) => {
+            state.loginUser = initialState.loginUser;
+        },
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
         },
@@ -46,5 +52,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setRegisterUser, setLoginUser, setIsAuthenticated, setUserUpdate } = userSlice.actions;
+export const { setRegisterUser,clearRegisterUser, setLoginUser,clearLoginUser, setIsAuthenticated, setUserUpdate } = userSlice.actions;
 export default userSlice.reducer;

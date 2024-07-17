@@ -9,7 +9,7 @@ const Recipe = () => {
     return <h2>Loading...</h2>
   }
   return (
-      <div className="w-[500px] mx-auto mt-10">
+      <div className="w-[500px] mx-auto mt-20">
         {
           getReceipes.map((recipe) => (
             <RecipeList key={recipe._id} recipe={recipe} />

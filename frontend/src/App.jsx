@@ -7,12 +7,14 @@ import Auth from "./pages/auth"
 import Navbar from './components/navbar/navbar'
 import CreateRecipe from './pages/createRecipe'
 import Profile from './pages/profile'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
     <>
       <Navbar />
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
 

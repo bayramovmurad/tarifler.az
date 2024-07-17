@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useAddRecipesMutation } from "../redux/recipe/recipeApiSlice";
-import { setCreateRecipe } from "../redux/recipe/recipeSlice";
+import { clearRecipe, setCreateRecipe } from "../redux/recipe/recipeSlice";
 import { getToken } from "../utils/token";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateRecipe = () => {
   const dispatch = useDispatch();
@@ -20,6 +22,8 @@ const CreateRecipe = () => {
     try {
       const result = await addRecipes(createRecipe).unwrap();
       dispatch(setCreateRecipe(result));
+      toast.success("Successfully");
+      // dispatch(clearRecipe())
     } catch (err) {
       console.error("Failed to save the recipe: ", err);
     }
@@ -28,7 +32,7 @@ const CreateRecipe = () => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
       <input
-        className="border border-black p-3"
+        className="border border-black p-2 rounded-md"
         type="text"
         placeholder="name"
         name="name"
@@ -36,7 +40,7 @@ const CreateRecipe = () => {
         onChange={handleChange}
       />
       <input
-        className="border border-black p-3"
+        className="border border-black p-2 rounded-md"
         type="text"
         placeholder="ingredients"
         name="ingredients"
@@ -44,7 +48,7 @@ const CreateRecipe = () => {
         onChange={handleChange}
       />
       <input
-        className="border border-black p-3"
+        className="border border-black p-2 rounded-md"
         type="text"
         placeholder="instructions"
         name="instructions"
@@ -52,7 +56,7 @@ const CreateRecipe = () => {
         onChange={handleChange}
       />
       <input
-        className="border border-black p-3"
+        className="border border-black p-2 rounded-md"
         type="text"
         placeholder="imageUrl"
         name="imageUrl"
@@ -60,14 +64,14 @@ const CreateRecipe = () => {
         onChange={handleChange}
       />
       <input
-        className="border border-black p-3"
+        className="border border-black p-2 rounded-md"
         type="number"
         placeholder="cookingTime"
         name="cookingTime"
         value={createRecipe.cookingTime}
         onChange={handleChange}
       />
-      <input className="border border-black p-3" type="submit" value="Submit" />
+      <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="Submit" value="Send" />
     </form>
   );
 }

@@ -1,15 +1,14 @@
-const RecipeList = ({recipe}) => {
-  console.log(recipe);
+const RecipeList = ({ recipe }) => {
   return (
-          <div className="bg-black text-white mb-4" key={recipe._id}>
-              <h2>{recipe.name}</h2>
-              <img src={recipe.imageUrl} alt={recipe.name} />
-              <h3>{recipe.ingredients}</h3>
-              <p>{recipe.instructions}</p>
-              <div>
-                  <h2>{recipe.userOwner?.username}</h2>
-              </div>
-          </div>
+    <div className="bg-white shadow-2xl p-5 text-black mb-4" key={recipe._id}>
+      <h2 className="font-semibold text-2xl">{recipe.name}</h2>
+      <img className="mx-auto my-4 rounded-md" src={recipe.imageUrl} alt={recipe.name} />
+      <h3 className="mb-2 text-xl">{recipe.ingredients}</h3>
+      <p className="mb-2">{recipe.instructions}</p>
+      <div>
+        <h4 className="font-bold"><span className="font-thin">Author:</span> {recipe.userOwner?.username}</h4>
+      </div>
+    </div>
   )
 }
 export default RecipeList

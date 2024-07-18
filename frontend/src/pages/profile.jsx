@@ -1,67 +1,38 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useDeleteUserMutation, useGetUserQuery, useUpdateUserMutation } from '../redux/user/userApiSlice';
+import { useGetUserQuery } from '../redux/user/userApiSlice';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { setUserUpdate } from '../redux/user/userSlice';
 import UserRecipes from '../components/profile/userRecipes';
+import UserAction from '../components/profile/userAction';
+import UserUpdate from '../components/profile/userUpdate';
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const { userUpdate } = useSelector(state => state.user);
-    const [updateUser, { isLoading: userUpdateLoading }] = useUpdateUserMutation();
-    const [deleteUser, { isSuccess: isDeleteSuccess }] = useDeleteUserMutation();
+    const [isFormVisible, setIsFormVisible] = useState(false);
     const { data: user } = useGetUserQuery();
-    const navigate = useNavigate();
-
+    
     useEffect(() => {
         if (user) {
             dispatch(setUserUpdate(user.user.username));
         }
+    }, [user, dispatch]);
 
-    }, [])
-
-
-    useEffect(() => {
-        if (isDeleteSuccess) {
-            navigate('/auth');
-        }
-    }, [isDeleteSuccess, navigate]);
-
-    const handleUpdateUser = async (e) => {
-        e.preventDefault();
-        try {
-            await updateUser({ id: user.user._id, username: userUpdate });
-        } catch (error) {
-            console.error('Update failed:', error);
-        }
-    };
-
-    const signOut = () => {
-        localStorage.removeItem("token");
-        navigate('/auth');
-    };
 
     return (
         <div className='w-[500px] mx-auto mt-10'>
             <div>
-                <form onSubmit={handleUpdateUser}>
-                    <div>
-                        <label>Username:</label>
-                        <input
-                            className='border w-full p-2 border-black rounded-md mt-2'
-                            type="text"
-                            value={userUpdate}
-                            onChange={(e) => dispatch(setUserUpdate(e.target.value))}
-                        />
-                    </div>
-                </form>
+                <h2 className='shadow-lg p-2 text-2xl font semibold'>{user?.user?.username}</h2>
+              {isFormVisible && <UserUpdate/>}
                 <div className='flex justify-between mt-3'>
-                    <button className='border border-black px-20 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' type="submit" disabled={userUpdateLoading}>
-                        {userUpdateLoading ? 'Loading...' : 'Update'}
+                    <button
+                        className='border border-black px-20 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300'
+                        type="button"
+                        onClick={() => setIsFormVisible(!isFormVisible)}
+                    >
+                        Update
                     </button>
-                    <div className='flex gap-x-4'>
-                        <button className='border border-black px-3 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' onClick={() => deleteUser({ id: user.user._id })}>Delete Account</button>
-                        <button className='border border-black px-3 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300' onClick={signOut}>Sign out</button>
+                    <div>
+                        <UserAction/>
                     </div>
                 </div>
             </div>

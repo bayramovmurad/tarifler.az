@@ -8,6 +8,15 @@ const initialState = {
         imageUrl:'',
         cookingTime:'',
         userOwner:''
+    },
+       updateRecipe: {
+        _id:'',
+        name: '',
+        ingredients: '',
+        instructions: '',
+        imageUrl: '',
+        cookingTime: '',
+        userOwner: ''
     }
 }
 
@@ -27,9 +36,25 @@ const recipeSlice =  createSlice({
         },
         clearRecipe: (state) => {
             state.createRecipe = initialState.createRecipe
-        }
+        },
+        setUpdateRecipe: (state, action) => {
+            const { name, value } = action.payload;
+            return {
+                ...state,
+                updateRecipe: {
+                    ...state.updateRecipe,
+                    [name]: value
+                },
+            };
+        },
+        setUpdateField: (state,action) => {
+            state.updateRecipe = action.payload
+        },
+        clearUpdateRecipe: (state) => {
+            state.updateRecipe = initialState.updateRecipe
+        },
     },
 });
 
-export const { setCreateRecipe,clearRecipe } = recipeSlice.actions;
+export const { setCreateRecipe,clearRecipe,setUpdateRecipe,clearUpdateRecipe,setUpdateField } = recipeSlice.actions;
 export default recipeSlice.reducer;

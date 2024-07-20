@@ -1,28 +1,27 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useGetUserQuery } from '../redux/user/userApiSlice';
 import { useEffect, useState } from 'react';
-import { setUserUpdate } from '../redux/user/userSlice';
 import UserRecipes from '../components/profile/userRecipes';
 import UserAction from '../components/profile/userAction';
 import UserUpdate from '../components/profile/userUpdate';
+import { userGlobalContext } from '../context/userContext';
 
 const Profile = () => {
-    const dispatch = useDispatch();
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const { data: user } = useGetUserQuery();
-    
+    const { username, setUsername, user, userLoading } = userGlobalContext();
+
     useEffect(() => {
         if (user) {
-            dispatch(setUserUpdate(user.user.username));
+            setUsername(user.user.username);
         }
-    }, [user, dispatch]);
+    }, [user]);
 
+    if (userLoading) return <div>Loading user data...</div>;
 
     return (
         <div className='w-[500px] mx-auto mt-10'>
             <div>
-                <h2 className='shadow-lg p-2 text-2xl font semibold'>{user?.user?.username}</h2>
-              {isFormVisible && <UserUpdate/>}
+                <h2 className='shadow-lg p-2 text-2xl font semibold'>{username}</h2>
+                {isFormVisible && <UserUpdate />}
                 <div className='flex justify-between mt-3'>
                     <button
                         className='border border-black px-20 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300'
@@ -32,7 +31,7 @@ const Profile = () => {
                         Update
                     </button>
                     <div>
-                        <UserAction/>
+                        <UserAction />
                     </div>
                 </div>
             </div>

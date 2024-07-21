@@ -1,76 +1,68 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useAddRecipesMutation } from "../redux/recipe/recipeApiSlice";
-import { clearRecipe, setCreateRecipe } from "../redux/recipe/recipeSlice";
-import { getToken } from "../utils/token";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useForm } from "react-hook-form";
+
 
 const CreateRecipe = () => {
-  const dispatch = useDispatch();
-  const { createRecipe } = useSelector(state => state.recipe);
   const [addRecipes] = useAddRecipesMutation();
+  const {register, handleSubmit, formState:{errors},reset
+  } = useForm({
+    defaultValues:{name:"",ingredients:"", instructions:"", imageUrl:"", cookingTime:"", userOwner:""}
+  })
 
-  getToken()
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setCreateRecipe({ name, value }))
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    reset();
     try {
-      const result = await addRecipes(createRecipe).unwrap();
-      dispatch(setCreateRecipe(result));
-      toast.success("Successfully");
-      // dispatch(clearRecipe())
-    } catch (err) {
+      const response = await addRecipes(data).unwrap();
+      toast.success(response.message);
+    } catch (error) {
       console.error("Failed to save the recipe: ", err);
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
       <input
         className="border border-black p-2 rounded-md"
         type="text"
         placeholder="name"
         name="name"
-        value={createRecipe.name}
-        onChange={handleChange}
+        {...register("name",{ required: "Password is required" })}
       />
+      {errors.name && <p className="text-red-500">{errors.password.message}</p> }
       <input
         className="border border-black p-2 rounded-md"
         type="text"
         placeholder="ingredients"
         name="ingredients"
-        value={createRecipe.ingredients}
-        onChange={handleChange}
+        {...register("ingredients",{ required: "Password is required" })}
       />
+      {errors.ingredients && <p className="text-red-500">{errors.password.message}</p>}
       <input
         className="border border-black p-2 rounded-md"
         type="text"
         placeholder="instructions"
         name="instructions"
-        value={createRecipe.instructions}
-        onChange={handleChange}
+       {...register("instructions",{ required: "Password is required" })}
       />
+      {errors.instructions && <p className="text-red-500">{errors.password.message}</p>}
       <input
         className="border border-black p-2 rounded-md"
         type="text"
         placeholder="imageUrl"
         name="imageUrl"
-        value={createRecipe.imageUrl}
-        onChange={handleChange}
+      {...register("imageUrl",{ required: "Password is required" })}
       />
+      {errors.imageUrl && <p className="text-red-500">{errors.password.message}</p>}
       <input
         className="border border-black p-2 rounded-md"
         type="number"
         placeholder="cookingTime"
         name="cookingTime"
-        value={createRecipe.cookingTime}
-        onChange={handleChange}
+       {...register("cookingTime",{ required: "Password is required" })}
       />
+      {errors.cookingTime && <p className="text-red-500">{errors.password.message}</p>}
       <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="Submit" value="Send" />
     </form>
   );

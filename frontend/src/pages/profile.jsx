@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import UserRecipes from '../components/profile/userRecipes';
 import UserAction from '../components/profile/userAction';
 import UserUpdate from '../components/profile/userUpdate';
-import { userGlobalContext } from '../context/userContext';
+import { useGlobalContext } from '../context/context';
 
 const Profile = () => {
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const { username, setUsername, user, userLoading } = userGlobalContext();
+    const { username, setUsername, user, userLoading } = useGlobalContext();
 
     useEffect(() => {
         if (user) {
@@ -35,7 +35,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-            <UserRecipes user={user} />
+            <UserRecipes />
         </div>
     );
 };

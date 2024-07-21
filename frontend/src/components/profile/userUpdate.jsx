@@ -1,10 +1,10 @@
-import { userGlobalContext } from "../../context/userContext";
+import { useGlobalContext } from "../../context/context";
 import { useGetUserQuery, useUpdateUserMutation } from "../../redux/user/userApiSlice";
 import { useForm } from "react-hook-form";
 
 const UserUpdate = () => {
     const [updateUser, { isLoading: userUpdateLoading }] = useUpdateUserMutation();
-    const { username, user, userLoading, handleUpdate } = userGlobalContext();
+    const { username, user, userLoading, handleUpdate } = useGlobalContext();
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
             username: username

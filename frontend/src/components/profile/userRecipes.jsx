@@ -2,12 +2,10 @@ import { useState } from "react";
 import { useDeleteRecipeMutation, useGetRecipesQuery } from "../../redux/recipe/recipeApiSlice";
 import './style.css';
 import RecipeUpdate from "./recipeUpdate";
-import { setUpdateField} from "../../redux/recipe/recipeSlice";
-import { useDispatch } from "react-redux";
+import { useGlobalContext } from "../../context/context";
 
-const UserRecipes = ({ user }) => {
-  const dispatch = useDispatch();
-  const { data: recipes, isLoading } = useGetRecipesQuery();
+const UserRecipes = () => {
+  const { user, setRecipeUpdate, recipes, isLoading } = useGlobalContext();
   const [deleteRecipe] = useDeleteRecipeMutation();
 
   const userId = user?.user?._id;
@@ -15,9 +13,8 @@ const UserRecipes = ({ user }) => {
   const [showUpdate, setShowUpdate] = useState(false);
 
   const updateRecipeField = (recipe) => {
-    console.log(recipe);
     setShowUpdate(true);
-    dispatch(setUpdateField(recipe));
+    setRecipeUpdate(recipe);
   }
 
 
@@ -44,9 +41,9 @@ const UserRecipes = ({ user }) => {
       ) : (
         <p>No recipes found.</p>
       )}
-      {showUpdate &&  (
+      {showUpdate && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <RecipeUpdate/>
+          <RecipeUpdate />
         </div>
       )}
     </div>

@@ -1,10 +1,11 @@
+import { toast } from "react-toastify";
 import { useGlobalContext } from "../../context/context";
-import { useGetUserQuery, useUpdateUserMutation } from "../../redux/user/userApiSlice";
+import { useUpdateUser } from "../../query/userQuery";
 import { useForm } from "react-hook-form";
 
 const UserUpdate = () => {
-    const [updateUser, { isLoading: userUpdateLoading }] = useUpdateUserMutation();
-    const { username, user, userLoading, handleUpdate } = useGlobalContext();
+    const {mutate: updateUser, isLoading, error} = useUpdateUser();
+    const { username, userData, userLoading, handleUpdate } = useGlobalContext();
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
             username: username
@@ -13,15 +14,21 @@ const UserUpdate = () => {
 
     const onSubmit = async (data) => {
         try {
-            if (user && user.user) {
-                await updateUser({ id: user.user._id, username: data.username });
-                handleUpdate(data.username);
-                reset();
+            if (userData && userData?.user) {
+                 updateUser({ _id: userData.user._id, username: data.username },{
+                    onSuccess: () => {
+                        handleUpdate(data.username);
+                        reset();
+                    },
+                     onError: (error) => {
+                         toast.error("Invalid username and password");
+                     }
+                 });
             }
         } catch (error) {
-            console.error('Update failed:', error);
+            toast.error("An unexpected error occurred");
         }
-    };
+    }
 
     if (userLoading) return <div>Loading user data...</div>;
 
@@ -39,9 +46,9 @@ const UserUpdate = () => {
                 <button
                     className='border border-black px-20 py-1 w-full rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300 mt-2'
                     type="submit"
-                    disabled={userUpdateLoading}
+                    disabled={isLoading}
                 >
-                    {userUpdateLoading ? 'Loading...' : 'Submit Update'}
+                    {isLoading ? 'Loading...' : 'Submit Update'}
                 </button>
             </form>
         </div>

@@ -5,10 +5,10 @@ import RecipeUpdate from "./recipeUpdate";
 import { useGlobalContext } from "../../context/context";
 
 const UserRecipes = () => {
-  const { user, setRecipeUpdate, recipes, isLoading } = useGlobalContext();
+  const { userData, setRecipeUpdate, recipes, isLoading } = useGlobalContext();
   const [deleteRecipe] = useDeleteRecipeMutation();
 
-  const userId = user?.user?._id;
+  const userId = userData?.user?._id;
   const userRecipes = recipes?.filter(item => item.userOwner?._id === userId);
   const [showUpdate, setShowUpdate] = useState(false);
 

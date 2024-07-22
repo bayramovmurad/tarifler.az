@@ -1,21 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import { useDeleteUserMutation } from "../../redux/user/userApiSlice";
 import { useEffect } from "react";
+import { useDeleteUser } from "../../query/userQuery";
+import { useGlobalContext } from "../../context/context";
 
 const UserAction = () => {
     const navigate = useNavigate();
-    const [deleteUser, { isSuccess: isDeleteSuccess }] = useDeleteUserMutation();
+    const {mutate:deleteUser, isLoading, error} = useDeleteUser();
+    const {userData} = useGlobalContext();
 
     useEffect(() => {
-        if (isDeleteSuccess) {
+        if (isLoading) {
+            localStorage.removeItem("token");
             navigate('/auth');
         }
-    }, [isDeleteSuccess, navigate]);
+    }, [isLoading, navigate]);
 
     const signOut = () => {
         localStorage.removeItem("token");
         navigate('/auth');
     };
+
+    if(isLoading){
+        return <h1>Loading...</h1>
+    }
 
   return (
      <div className="flex gap-x-4">
@@ -27,7 +34,7 @@ const UserAction = () => {
           </button>
           <button
               className='border border-black px-3 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300'
-              onClick={() => deleteUser({ id: user.user._id })}
+              onClick={() => deleteUser({ _id: userData.user._id })}
           >
               Delete Account
           </button>

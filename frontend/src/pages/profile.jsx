@@ -1,4 +1,3 @@
-import { useGetUserQuery } from '../redux/user/userApiSlice';
 import { useEffect, useState } from 'react';
 import UserRecipes from '../components/profile/userRecipes';
 import UserAction from '../components/profile/userAction';
@@ -7,13 +6,13 @@ import { useGlobalContext } from '../context/context';
 
 const Profile = () => {
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const { username, setUsername, user, userLoading } = useGlobalContext();
+    const { username, setUsername, userData, userLoading } = useGlobalContext();
 
     useEffect(() => {
-        if (user) {
-            setUsername(user.user.username);
+        if (userData) {
+            setUsername(userData?.user?.username);
         }
-    }, [user]);
+    }, [userData]);
 
     if (userLoading) return <div>Loading user data...</div>;
 

@@ -1,30 +1,40 @@
-import { useAddLoginUserMutation } from "../../redux/user/userApiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { useAddLoginUser } from "../../query/userQuery";
 
 const Login = () => {
     const navigate = useNavigate();
-    const [addLoginUser] = useAddLoginUserMutation();
+    const { mutate: addLoginUser, isLoading, error } = useAddLoginUser();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset
-    } = useForm({defaultValues:{username:"",password:""}});
+    } = useForm({ defaultValues: { username: "", password: "" } });
 
     const onSubmit = async (data) => {
         reset();
         try {
-            const response = await addLoginUser(data).unwrap();
-            toast.success(response.message);
-            localStorage.setItem("token", response.token);
-            navigate("/");
+            addLoginUser(data, {
+                onSuccess: (response) => {
+                    toast.success(response.message);
+                    localStorage.setItem("token", response.token);
+                    navigate("/");
+                },
+                onError: (error) => {
+                    toast.error("Invalid username and password");
+                }
+            });
         } catch (error) {
-            toast.error("Invalid username and password");
+            toast.error("An unexpected error occurred");
         }
     };
+
+    if (isLoading) {
+        return <h1>Loading...</h1>
+    }
 
     return (
         <div>

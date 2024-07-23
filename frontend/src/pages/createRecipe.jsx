@@ -1,24 +1,38 @@
-import { useAddRecipesMutation } from "../redux/recipe/recipeApiSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from "react-hook-form";
+import { useAddRecipe } from "../query/recipeQuery";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateRecipe = () => {
-  const [addRecipes] = useAddRecipesMutation();
+  const navigate = useNavigate();
+  const {mutate:addRecipe, isLoading} = useAddRecipe();
   const {register, handleSubmit, formState:{errors},reset
   } = useForm({
     defaultValues:{name:"",ingredients:"", instructions:"", imageUrl:"", cookingTime:"", userOwner:""}
   })
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     reset();
     try {
-      const response = await addRecipes(data).unwrap();
-      toast.success(response.message);
+      addRecipe(data, {
+        onSuccess: (response) => {
+          toast.success(response.message);
+          navigate('/');
+        },
+        onError: () => {
+          toast.error(response.message);
+        }
+      });
+     
     } catch (error) {
       console.error("Failed to save the recipe: ", err);
     }
+  }
+
+  if(isLoading){
+    return <h1>Loading...</h1>
   }
 
   return (

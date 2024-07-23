@@ -1,13 +1,13 @@
-import { useEditRecipeMutation } from "../../redux/recipe/recipeApiSlice";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
 import { useGlobalContext } from "../../context/context";
 import { useEffect } from 'react';
+import { useUpdateRecipe } from "../../query/recipeQuery";
 
 const RecipeUpdate = () => {
     const { recipeUpdate, handleRecipeUpdate } = useGlobalContext();
-    const [editRecipe] = useEditRecipeMutation();
+    const {mutate:updateRecipe} = useUpdateRecipe();
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: { _id: "", name: "", ingredients: "", instructions: "", imageUrl: "", cookingTime: "", userOwner: "" }
     });
@@ -24,12 +24,19 @@ const RecipeUpdate = () => {
         }
     }, [recipeUpdate, setValue]);
 
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         try {
-            const response = await editRecipe(data).unwrap();
-            toast.success(response.message);
-            handleRecipeUpdate(null);
-            reset();
+            updateRecipe(data,{
+                onSuccess: (response) => {
+                    toast.success(response.message);
+                    handleRecipeUpdate(null);
+                    reset();
+                },
+                onError: () => {
+                    toast.error("Something went wrong");
+                }
+            });
+            
         } catch (error) {
             toast.error("Failed to update recipe.");
             console.error("Update error:", error);

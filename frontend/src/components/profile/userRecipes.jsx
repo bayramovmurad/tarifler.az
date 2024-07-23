@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useDeleteRecipeMutation, useGetRecipesQuery } from "../../redux/recipe/recipeApiSlice";
 import './style.css';
 import RecipeUpdate from "./recipeUpdate";
 import { useGlobalContext } from "../../context/context";
+import { useDeleteRecipe } from "../../query/recipeQuery";
 
 const UserRecipes = () => {
   const { userData, setRecipeUpdate, recipes, isLoading } = useGlobalContext();
-  const [deleteRecipe] = useDeleteRecipeMutation();
+  const {mutate:deleteRecipe} = useDeleteRecipe();
 
   const userId = userData?.user?._id;
   const userRecipes = recipes?.filter(item => item.userOwner?._id === userId);
@@ -33,7 +33,7 @@ const UserRecipes = () => {
               <img className="rounded-md" src={recipe.imageUrl} alt={recipe.name} />
               <div className='flex gap-x-4 justify-between my-2'>
                 <button onClick={() => updateRecipeField(recipe)} className="border border-black px-2 rounded-md bg-black text-white hover:font-semibold hover:bg-white hover:text-black duration-300">Update</button>
-                <button className="border border-black px-2 rounded-md bg-black text-white hover:font-semibold hover:bg-white hover:text-black duration-300" onClick={() => deleteRecipe({ id: recipe._id })}>Delete</button>
+                <button className="border border-black px-2 rounded-md bg-black text-white hover:font-semibold hover:bg-white hover:text-black duration-300" onClick={() => deleteRecipe({ _id: recipe._id })}>Delete</button>
               </div>
             </div>
           ))}

@@ -2,9 +2,9 @@ import RecipeList from "../components/recipe/recipeList";
 import { useGlobalContext } from "../context/context";
 
 const Recipe = () => {
-  const { recipes, isLoading } = useGlobalContext();
+  const { recipes, recipesLoading } = useGlobalContext();
 
-  if (isLoading) {
+  if (recipesLoading) {
     return <h2>Loading...</h2>
   }
   return (

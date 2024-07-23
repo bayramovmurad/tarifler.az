@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from 'react';
 import { useGetUser } from '../query/userQuery';
-import { useGetRecipesQuery } from '../redux/recipe/recipeApiSlice';
+import { useGetRecipes } from '../query/recipeQuery';
 
 const CreateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
     const { data: userData, error: userError, isLoading: userLoading } = useGetUser();
-    const { data: recipes, isLoading: recipesLoading, error: recipesError } = useGetRecipesQuery();
+    const { data: recipes, isLoading:recipesLoading } = useGetRecipes();
 
     const [username, setUsername] = useState('');
     const [recipeUpdate, setRecipeUpdate] = useState('');

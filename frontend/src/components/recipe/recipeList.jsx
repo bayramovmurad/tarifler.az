@@ -1,6 +1,6 @@
 const RecipeList = ({ recipe }) => {
   return (
-    <div className="bg-white shadow-2xl p-5 text-black mb-4" key={recipe._id}>
+    <div className="bg-white rounded-md p-5 text-black mb-8" key={recipe._id}>
       <h2 className="font-semibold text-2xl">{recipe.name}</h2>
       <img className="mx-auto my-4 rounded-md" src={recipe.imageUrl} alt={recipe.name} />
       <h3 className="mb-2 text-xl">{recipe.ingredients}</h3>

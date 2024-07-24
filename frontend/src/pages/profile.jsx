@@ -19,9 +19,13 @@ const Profile = () => {
     return (
         <div className='w-[500px] mx-auto mt-10'>
             <div>
-                <h2 className='shadow-lg p-2 text-2xl font semibold'>{username}</h2>
-                {isFormVisible && <UserUpdate />}
-                <div className='flex justify-between mt-3'>
+                <h2 className='border-white border rounded-lg p-2 text-2xl font semibold'>{username}</h2>
+                {isFormVisible && (
+                    <div className="fixed inset-0 bg-gray-800 bg-opacity-90 flex pt-24 justify-center z-50">
+                        <UserUpdate />
+                    </div>
+                )}
+                <div className='flex justify-between mt-6'>
                     <button
                         className='border border-black px-20 py-1 rounded-md bg-black text-white hover:bg-white hover:text-black hover:font-semibold duration-300'
                         type="button"

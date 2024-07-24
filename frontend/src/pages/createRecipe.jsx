@@ -13,13 +13,13 @@ const CreateRecipe = () => {
     defaultValues:{name:"",ingredients:"", instructions:"", imageUrl:"", cookingTime:"", userOwner:""}
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = (data) => {    
     reset();
     try {
       addRecipe(data, {
         onSuccess: (response) => {
           toast.success(response.message);
-          navigate('/');
+          navigate('/')
         },
         onError: () => {
           toast.error(response.message);
@@ -36,48 +36,54 @@ const CreateRecipe = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[500px] max-w-full mx-auto gap-y-2 mt-10">
+      <h3 className="text-white font-semibold text-2xl pb-4">Update Recipe</h3>
+      <label className="text-white font-semibold leading-[10px]" htmlFor="name">Name</label>
       <input
         className="border border-black p-2 rounded-md"
         type="text"
-        placeholder="name"
-        name="name"
-        {...register("name",{ required: "Password is required" })}
+        id="name"
+        placeholder="Name"
+        {...register("name", { required: "name is required" })}
       />
-      {errors.name && <p className="text-red-500">{errors.password.message}</p> }
+      {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+      <label className="text-white font-semibold leading-[10px]" htmlFor="ingredients">Ingredients</label>
       <input
         className="border border-black p-2 rounded-md"
         type="text"
+        id="ingredients"
         placeholder="ingredients"
-        name="ingredients"
-        {...register("ingredients",{ required: "Password is required" })}
+        {...register("ingredients", { required: "ingredients is required" })}
       />
-      {errors.ingredients && <p className="text-red-500">{errors.password.message}</p>}
+      {errors.ingredients && <p className="text-red-500">{errors.ingredients.message}</p>}
+      <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">instructions</label>
       <input
         className="border border-black p-2 rounded-md"
         type="text"
-        placeholder="instructions"
-        name="instructions"
-       {...register("instructions",{ required: "Password is required" })}
+        id="instructions"
+        placeholder="Instructions"
+        {...register("instructions", { required: "instructions is required" })}
       />
-      {errors.instructions && <p className="text-red-500">{errors.password.message}</p>}
+      {errors.instructions && <p className="text-red-500">{errors.instructions.message}</p>}
+      <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Image URL</label>
       <input
         className="border border-black p-2 rounded-md"
         type="text"
-        placeholder="imageUrl"
-        name="imageUrl"
-      {...register("imageUrl",{ required: "Password is required" })}
+        id="imgUrl"
+        placeholder="Image URL"
+        {...register("imageUrl", { required: "imageUrl is required" })}
       />
-      {errors.imageUrl && <p className="text-red-500">{errors.password.message}</p>}
+      {errors.imageUrl && <p className="text-red-500">{errors.imageUrl.message}</p>}
+      <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Cooking Time</label>
       <input
+        id="cookingTime"
         className="border border-black p-2 rounded-md"
         type="number"
-        placeholder="cookingTime"
-        name="cookingTime"
-       {...register("cookingTime",{ required: "Password is required" })}
+        placeholder="Cooking Time"
+        {...register("cookingTime", { required: "cookingTime is required" })}
       />
-      {errors.cookingTime && <p className="text-red-500">{errors.password.message}</p>}
-      <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="Submit" value="Send" />
+      {errors.cookingTime && <p className="text-red-500">{errors.cookingTime.message}</p>}
+      <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="submit" value="Send" />
     </form>
   );
 }

@@ -36,7 +36,7 @@ const UserUpdate = () => {
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <label>Username:</label>
+                    <label className="text-white font-semibold">Username:</label>
                     <input
                         className='border w-full p-2 border-black rounded-md mt-2'
                         type="text"

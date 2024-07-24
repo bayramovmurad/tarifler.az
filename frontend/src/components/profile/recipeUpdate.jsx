@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form';
 import { useGlobalContext } from "../../context/context";
 import { useEffect } from 'react';
 import { useUpdateRecipe } from "../../query/recipeQuery";
+import { useNavigate } from "react-router-dom";
 
 const RecipeUpdate = () => {
-    const { recipeUpdate, handleRecipeUpdate } = useGlobalContext();
+    const navigate = useNavigate();
+    const { recipeUpdate } = useGlobalContext();
     const {mutate:updateRecipe} = useUpdateRecipe();
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
         defaultValues: { _id: "", name: "", ingredients: "", instructions: "", imageUrl: "", cookingTime: "", userOwner: "" }
@@ -29,8 +31,8 @@ const RecipeUpdate = () => {
             updateRecipe(data,{
                 onSuccess: (response) => {
                     toast.success(response.message);
-                    handleRecipeUpdate(null);
                     reset();
+                    navigate('/recipe');
                 },
                 onError: () => {
                     toast.error("Something went wrong");
@@ -45,36 +47,52 @@ const RecipeUpdate = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="absolute top-20 flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
+            <h3 className="text-white font-semibold text-2xl pb-4">Update Recipe</h3>
+            <label className="text-white font-semibold leading-[10px]" htmlFor="name">Name</label>
             <input
                 className="border border-black p-2 rounded-md"
                 type="text"
+                id="name"
                 placeholder="Name"
-                {...register("name", { required: true })}
+                {...register("name", { required: "name is required" })}
             />
+            {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+            <label className="text-white font-semibold leading-[10px]" htmlFor="ingredients">Ingredients</label>
             <input
                 className="border border-black p-2 rounded-md"
                 type="text"
-                placeholder="Ingredients"
-                {...register("ingredients", { required: true })}
+                id="ingredients"
+                placeholder="ingredients"
+                {...register("ingredients", { required: "ingredients is required" })}
             />
+            {errors.ingredients && <p className="text-red-500">{errors.ingredients.message}</p>}
+            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">instructions</label>
             <input
                 className="border border-black p-2 rounded-md"
                 type="text"
+                id="instructions"
                 placeholder="Instructions"
-                {...register("instructions", { required: true })}
+                {...register("instructions", { required: "instructions is required" })}
             />
+            {errors.instructions && <p className="text-red-500">{errors.instructions.message}</p>}
+            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Image URL</label>
             <input
                 className="border border-black p-2 rounded-md"
                 type="text"
+                id="imgUrl"
                 placeholder="Image URL"
-                {...register("imageUrl", { required: true })}
+                {...register("imageUrl", { required: "imageUrl is required" })}
             />
+            {errors.imageUrl && <p className="text-red-500">{errors.imageUrl.message}</p>}
+            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Cooking Time</label>
             <input
+                id="cookingTime"
                 className="border border-black p-2 rounded-md"
                 type="number"
                 placeholder="Cooking Time"
-                {...register("cookingTime", { required: true })}
+                {...register("cookingTime", { required: "cookingTime is required" })}
             />
+            {errors.cookingTime && <p className="text-red-500">{errors.cookingTime.message}</p>}
             <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="submit" value="Send" />
         </form>
     );

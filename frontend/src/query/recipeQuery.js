@@ -45,3 +45,41 @@ export const useDeleteRecipe = () => {
         },
     });
 };
+
+// ! like, recipe, comment
+
+export const useAddLikeRecipe = () => {
+    const queryClient = useQueryClient();
+    return useMutation(async ({_id}) => {
+        const {data} = await recipeApi.post(`${_id}/like`);
+        return data;
+    },{
+        onSuccess: () => {
+            queryClient.invalidateQueries('recipe');
+        },
+    });
+};
+
+export const useAddDislikeRecipe = () => {
+    const queryClient = useQueryClient();
+    return useMutation(async ({_id}) => {
+        const { data } = await recipeApi.post(`${_id}/dislike`);
+        return data;
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('recipe');
+        },
+    });
+};
+
+export const useAddCommentRecipe = () => {
+    const queryClient = useQueryClient();
+    return useMutation(async ({_id,comment},) => {
+        const { data } = await recipeApi.post(`${_id}/comment`,{text:comment});
+        return data;
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('recipe');
+        },
+    });
+};

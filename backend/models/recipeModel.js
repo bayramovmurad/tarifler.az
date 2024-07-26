@@ -25,7 +25,19 @@ const RecipeSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
         required: true
-    }
+    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }],
+    dislikes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }],
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comment"
+    }]
 
 });
 

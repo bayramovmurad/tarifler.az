@@ -21,9 +21,13 @@ const RecipeLike = ({ recipe }) => {
   };
 
   return (
-    <button onClick={handleLike} className="mr-4 flex items-center">
-      <span role="img" aria-label="like">👍</span>
-      <span className="ml-2">{recipe.likes?.length || 0}</span>
+    <button
+      onClick={handleLike}
+      className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-gray-200 text-white  hover:bg-orange-50 hover:border-orange-200 hover:text-orange-600 active:scale-95 transition-all text-sm font-medium"
+      type="button"
+    >
+      <span role="img" aria-label="like" className="text-base">👍</span>
+      <span>{recipe.likes?.length || 0}</span>
     </button>
   );
 }

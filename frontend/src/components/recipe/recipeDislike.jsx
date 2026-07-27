@@ -1,12 +1,13 @@
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import { useAddDislikeRecipe } from "../../query/recipeQuery";
+import { toast } from "react-toastify";
 
-const RecipeDislike = ({recipe}) => {
-    const {mutate:addDislike} = useAddDislikeRecipe();
+const RecipeDislike = ({ recipe }) => {
+    const { mutate: addDislike } = useAddDislikeRecipe();
 
     const handleDislike = () => {
         try {
-            addDislike({_id: recipe._id}, {
+            addDislike({ _id: recipe._id }, {
                 onSuccess: (response) => {
                     toast.success(response.message);
                 },
@@ -19,11 +20,16 @@ const RecipeDislike = ({recipe}) => {
         }
     };
 
-  return (
-      <button onClick={handleDislike} className="flex items-center">
-          <span role="img" aria-label="dislike">👎</span>
-          <span className="ml-2">{recipe.dislikes?.length || 0}</span>
-      </button>
-  )
-}
-export default RecipeDislike
+    return (
+        <button
+            onClick={handleDislike}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-gray-200 text-white  hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 active:scale-95 transition-all text-sm font-medium"
+            type="button"
+        >
+            <span role="img" aria-label="dislike" className="text-base">👎</span>
+            <span>{recipe.dislikes?.length || 0}</span>
+        </button>
+    );
+};
+
+export default RecipeDislike;

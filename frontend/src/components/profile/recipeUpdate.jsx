@@ -1,101 +1,100 @@
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import './style.css';
+import RecipeUpdate from "./recipeUpdate";
 import { useGlobalContext } from "../../context/context";
-import { useEffect } from 'react';
-import { useUpdateRecipe } from "../../query/recipeQuery";
-import { useNavigate } from "react-router-dom";
+import { useDeleteRecipe } from "../../query/recipeQuery";
 
-const RecipeUpdate = () => {
-    const navigate = useNavigate();
-    const { recipeUpdate } = useGlobalContext();
-    const {mutate:updateRecipe} = useUpdateRecipe();
-    const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
-        defaultValues: { _id: "", name: "", ingredients: "", instructions: "", imageUrl: "", cookingTime: "", userOwner: "" }
-    });
+const UserRecipes = () => {
+    const { userData, setRecipeUpdate, recipes, isLoading } = useGlobalContext();
+    const { mutate: deleteRecipe } = useDeleteRecipe();
 
-    useEffect(() => {
-        if (recipeUpdate) {
-            setValue("_id", recipeUpdate._id);
-            setValue("name", recipeUpdate.name);
-            setValue("ingredients", recipeUpdate.ingredients);
-            setValue("instructions", recipeUpdate.instructions);
-            setValue("imageUrl", recipeUpdate.imageUrl);
-            setValue("cookingTime", recipeUpdate.cookingTime);
-            setValue("userOwner", recipeUpdate.userOwner._id);
-        }
-    }, [recipeUpdate, setValue]);
+    const userId = userData?.user?._id;
+    const userRecipes = recipes?.filter(item => item.userOwner?._id === userId);
+    const [showUpdate, setShowUpdate] = useState(false);
 
-    const onSubmit = (data) => {
-        try {
-            updateRecipe(data,{
-                onSuccess: (response) => {
-                    toast.success(response.message);
-                    reset();
-                    navigate('/recipe');
-                },
-                onError: () => {
-                    toast.error("Something went wrong");
-                }
-            });
-            
-        } catch (error) {
-            toast.error("Failed to update recipe.");
-            console.error("Update error:", error);
-        }
+    const updateRecipeField = (recipe) => {
+        setShowUpdate(true);
+        setRecipeUpdate(recipe);
+    }
+
+    // Modern UI for loading state
+    if (isLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
+                <div className="relative flex justify-center items-center w-12 h-12">
+                    <div className="absolute inset-0 rounded-full border-4 border-slate-800"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-amber-400 border-t-transparent animate-spin"></div>
+                </div>
+                <p className="text-slate-400 font-medium text-sm animate-pulse">
+                    Loading your recipes...
+                </p>
+            </div>
+        );
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="absolute top-20 flex flex-col w-[500px] max-w-full mx-auto gap-y-4 mt-10">
-            <h3 className="text-white font-semibold text-2xl pb-4">Update Recipe</h3>
-            <label className="text-white font-semibold leading-[10px]" htmlFor="name">Name</label>
-            <input
-                className="border border-black p-2 rounded-md"
-                type="text"
-                id="name"
-                placeholder="Name"
-                {...register("name", { required: "name is required" })}
-            />
-            {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-            <label className="text-white font-semibold leading-[10px]" htmlFor="ingredients">Ingredients</label>
-            <input
-                className="border border-black p-2 rounded-md"
-                type="text"
-                id="ingredients"
-                placeholder="ingredients"
-                {...register("ingredients", { required: "ingredients is required" })}
-            />
-            {errors.ingredients && <p className="text-red-500">{errors.ingredients.message}</p>}
-            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">instructions</label>
-            <input
-                className="border border-black p-2 rounded-md"
-                type="text"
-                id="instructions"
-                placeholder="Instructions"
-                {...register("instructions", { required: "instructions is required" })}
-            />
-            {errors.instructions && <p className="text-red-500">{errors.instructions.message}</p>}
-            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Image URL</label>
-            <input
-                className="border border-black p-2 rounded-md"
-                type="text"
-                id="imgUrl"
-                placeholder="Image URL"
-                {...register("imageUrl", { required: "imageUrl is required" })}
-            />
-            {errors.imageUrl && <p className="text-red-500">{errors.imageUrl.message}</p>}
-            <label className="text-white font-semibold leading-[10px]" htmlFor="instructions">Cooking Time</label>
-            <input
-                id="cookingTime"
-                className="border border-black p-2 rounded-md"
-                type="number"
-                placeholder="Cooking Time"
-                {...register("cookingTime", { required: "cookingTime is required" })}
-            />
-            {errors.cookingTime && <p className="text-red-500">{errors.cookingTime.message}</p>}
-            <input className="border border-black text-white bg-black hover:bg-white hover:text-black font-semibold duration-300" type="submit" value="Send" />
-        </form>
-    );
-};
+        <div className="relative mt-6">
+            {userRecipes?.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {userRecipes.map(recipe => (
+                        <div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 overflow-hidden hover:border-slate-700 transition-all duration-300 flex flex-col group p-4" key={recipe._id}>
 
-export default RecipeUpdate;
+                            {/* Recipe Image */}
+                            <div className="relative h-44 overflow-hidden bg-slate-950 rounded-xl mb-4">
+                                <img
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                                    src={recipe.imageUrl}
+                                    alt={recipe.name}
+                                />
+                            </div>
+
+                            {/* Recipe Name */}
+                            <h2 className="font-semibold text-white text-base line-clamp-2 mb-4 flex-grow scrollContainer">
+                                {recipe.name}
+                            </h2>
+
+                            {/* Action Buttons */}
+                            <div className='flex items-center gap-2 pt-3 border-t border-slate-800'>
+                                <button
+                                    onClick={() => updateRecipeField(recipe)}
+                                    className="flex-1 px-3 py-2 rounded-xl border border-slate-700 text-slate-200 bg-slate-800/50 hover:bg-slate-800 hover:text-amber-400 font-medium text-xs active:scale-95 transition-all"
+                                    type="button"
+                                >
+                                    Update
+                                </button>
+                                <button
+                                    className="flex-1 px-3 py-2 rounded-xl border border-rose-500/30 text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 font-medium text-xs active:scale-95 transition-all"
+                                    onClick={() => deleteRecipe({ _id: recipe._id })}
+                                    type="button"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-12 bg-slate-900/50 rounded-2xl border border-slate-800 border-dashed">
+                    <p className="text-slate-400 text-sm">You haven't added any recipes yet.</p>
+                </div>
+            )}
+
+            {showUpdate && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto"
+                    onClick={() => setShowUpdate(false)} // Closes on backdrop click
+                >
+                    <div
+                        className="relative w-full max-w-lg"
+                        onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
+                    >
+                        <RecipeUpdate onClose={() => setShowUpdate(false)} />
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default UserRecipes;
